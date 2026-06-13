@@ -31,8 +31,8 @@ jobs:
           mkdir -p zephyr-in-production/keys
           printf '%s' "$KEY_PEM" > zephyr-in-production/keys/my-key.pem
           chmod 600 zephyr-in-production/keys/my-key.pem
-          # Print the key - just for the training purposes
-          # cat zephyr-in-production/keys/my-key.pem
+          # Print the key - just for the training purposes - in real life you would not do this
+          # cat zephyr-in-production/keys/my-key.pem  
 
       - name: Build (production target, signed)
         working-directory: zephyr-in-production
