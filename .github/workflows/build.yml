@@ -15,12 +15,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: packt-training
+          path: zephyr-in-production
 
       - name: Setup Zephyr
         uses: zephyrproject-rtos/action-zephyr-setup@v1
         with:
-          app-path: packt-training
+          app-path: zephyr-in-production
           manifest-file-name: west.yml
           toolchains: arm-zephyr-eabi
 
@@ -28,19 +28,19 @@ jobs:
         env:
           KEY_PEM: ${{ secrets.MCUBOOT_SIGNING_KEY }}
         run: |
-          mkdir -p packt-training/keys
-          printf '%s' "$KEY_PEM" > packt-training/keys/my-key.pem
-          chmod 600 packt-training/keys/my-key.pem
+          mkdir -p zephyr-in-production/keys
+          printf '%s' "$KEY_PEM" > zephyr-in-production/keys/my-key.pem
+          chmod 600 zephyr-in-production/keys/my-key.pem
           # Print the key - just for the training purposes
-          cat packt-training/keys/my-key.pem
+          cat zephyr-in-production/keys/my-key.pem
 
       - name: Build (production target, signed)
-        working-directory: packt-training
+        working-directory: zephyr-in-production
         run: |
           west build -b training app --sysbuild -d build/prod --pristine
 
       - name: Verify signature
-        working-directory: packt-training
+        working-directory: zephyr-in-production
         run: |
           imgtool verify -k keys/my-key.pem build/prod/app/zephyr/zephyr.signed.bin
 
